@@ -1,7 +1,7 @@
 pg-simple
 =========
 
-A simple query api for postgres.
+A simple query api for the node.js pg library.
 
 # Usage
 
