@@ -4,13 +4,18 @@ var defaults = {
   database_url: ""
 };
 
-var exports = exports;
-exports.defaults = defaults
+var exports = module.exports = {
+  defaults: defaults
+};
 
-exports.query = function() {
+exports.query = function(config, values, callback) {
   var args = arguments;
-  pg.connect(defaults.database_url, function(error, client) {
-    client.query.apply(client, args);
+  pg.connect(defaults.database_url, function(err, client) {
+    if (err) {
+      callback(err);
+    } else {
+      client.query.apply(client, args);
+    }
   });
 };
 
@@ -20,8 +25,8 @@ exports.tableBy = function(table, field, values, callback) {
       callback(null, []);
     }, 0);
   } else {
-    exports.query(tableBySql(table, field, values), values, function(error, results) {
-      callback(error, results);
+    exports.query(tableBySql(table, field, values), values, function(err, results) {
+      callback(err, results);
     });
   }
 };
